@@ -3,7 +3,7 @@ var compo = compo||{};
 compo ={
 		cust_login_form : ()=>{
 			return '<h2>회원로그인</h2>'
-			+'<form action="/action_page.php">'
+			+'<form>'
 			  +'<div class="imgcontainer">'
 			    +'<img src="img_avatar2.png" alt="Avatar" class="avatar">'
 			  +'</div>'
