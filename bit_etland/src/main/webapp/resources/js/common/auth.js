@@ -1,20 +1,67 @@
 var auth = auth || {};
-auth.permission = (()=>{
+auth = (()=>{
+		let _,js,compojs,r_cnt,l_cnt;
 		let init =()=>{
+			_= $.ctx();
+			js= $.js();
+			compojs =js + '/component/compo.js';
+			r_cnt = '#right_content';
+			l_cnt = '#left_content';
 			onCreate();
+			
 		};
 		let onCreate =()=>{
 
 			setContentView();
 		};
 		let setContentView=()=>{
-			
+			$.getScript(compojs)
+			.done(()=>{
+				$(r_cnt).empty();
+				$(compo.cust_login_form())
+				.appendTo(r_cnt);
+				login();
+				$(l_cnt+' ul.nav').empty();
+				let arr =[
+					{name : 'emp_j', val : '사원가입'},
+					{name : 'emp_l', val : '사원로그인'},
+					{name : 'cust_j', val : '회원가입'},
+					{name : 'cust_l', val : '회원로그인'}
+				];
+				$.each(arr,(i,j)=>{
+					$('<li><a href="#">'+j.val+'</a></li>')
+					.appendTo('#left_content ul.nav')
+					.attr('name',j.name)
+					.click(function(){
+						let that = $(this).attr('name');
+						switch(that){
+						case 'emp_j' : 
+							$(r_cnt).empty();
+							$(compo.emp_join_form()).appendTo(r_cnt);
+							break;
+						case 'emp_l' :
+							$(r_cnt).empty();
+							$(compo.emp_login_form()).appendTo(r_cnt);
+							break;
+						case 'cust_j' : 
+							$(r_cnt).empty();
+							$(compo.cust_join_form()).appendTo(r_cnt);
+							break;
+						case 'cust_l' : 
+							$(r_cnt).empty();
+
+							$(compo.cust_login_form()).appendTo(r_cnt);
+							break;
+							};
+						});		
+					})
+			})
+					.fail(()=>{
+						alert('component/compo.js를 찾지 못했습니다');
+					});
 		};
 		
 		let login =()=>{
-			$.getScript($.js()+'/component/compo.js')
-			.done(()=>{
-				$('#right_content').html(compo.cust_login_form());
 				$('form button[type=submit]').click(()=>{
 					let data = {
 							customerID : $('form input[name=uname]').val(),
@@ -27,56 +74,18 @@ auth.permission = (()=>{
 						data : JSON.stringify(data),
 						dataType : 'json',
 						contentType : 'application/json',
-						success : d=>{},
-						error : e =>{}
+						success : d=>{
+							alert('성공');
+						},
+						error : e =>{
+							alert('실패');							
+						}
 					});
-				});
-				$('#left_content ul.nav').empty();
-				let arr =[
-					{name : 'emp_j', val : '사원가입'},
-					{name : 'emp_l', val : '사원로그인'},
-					{name : 'cust_j', val : '회원가입'},
-					{name : 'cust_l', val : '회원로그인'}
-				];
-				$.each(arr,(i,j)=>{
-				$('<li><a href="#">'+j.val+'</a></li>')
-				.appendTo('#left_content ul.nav')
-				.attr('name',j.name)
-				.click(function(){
-					let that = $(this).attr('name');
-					switch(that){
-					case 'emp_j' : 
-						$('#right_content').empty();
-						$(compo.emp_join_form()).appendTo('#right_content');
-						break;
-					case 'emp_l' :
-						$('#right_content').empty();
-						$(compo.emp_login_form()).appendTo('#right_content');
-						break;
-					case 'cust_j' : 
-						$('#right_content').empty();
-						$(compo.cust_join_form()).appendTo('#right_content');
-						break;
-					case 'cust_l' : 
-						$('#right_content').empty();
-
-						$(compo.cust_login_form()).appendTo('#right_content');
-						break;
-						};
-					});		
-				})
-			})
-			.fail(()=>{
-				alert('component/compo.js를 찾지 못했습니다');
 			});
 		};
 		let join =()=>{};
 		let mypage =()=>{};
-		return {
-			login : login,
-			join : join,
-			mypage : mypage
-		};
+		return {init :init};
 })();
 
 

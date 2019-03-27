@@ -14,7 +14,7 @@ app =(()=>{
 				$.getScript($.js()+'/common/auth.js')
 			  ).done(
 					()=>{			
-						auth.permission.login();
+						auth.init();
 					}					
 			  );
 	};
