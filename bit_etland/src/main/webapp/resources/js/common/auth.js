@@ -69,13 +69,18 @@ auth = (()=>{
 							};
 					alert(data.customerID);
 					$.ajax({
-						url : $.ctx()+'/cust/login/',
+						url : $.ctx()+'/cust/login',
 						type : 'post',
 						data : JSON.stringify(data),
 						dataType : 'json',
 						contentType : 'application/json',
 						success : d=>{
-							alert('성공');
+							if(d.customerID!==''){
+								alert('로그인성공'+d.customerID);
+								$(r_cnt).html(compo.cust_mypage());
+							}else{
+								alert('로그인실패');					
+							}
 						},
 						error : e =>{
 							alert('실패');							

@@ -14,8 +14,10 @@
     		ADDRESS, 
     		POSTALCODE
      FROM CUSTOMERS 
-    WHERE CUSTOMER_ID LIKE #{customerID}
+    	WHERE CUSTOMER_ID LIKE #{customerID} 
+     <if test="password !=null">
     	AND PASSWORD LIKE #{password}
+     </if>
   </select>
   <insert id="insertCustomer"
 		   parameterType="com.bit_etland.web.cust.Customer"
