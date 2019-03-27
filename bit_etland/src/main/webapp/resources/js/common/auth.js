@@ -20,8 +20,12 @@ auth = (()=>{
 				$(r_cnt).empty();
 				$(compo.cust_login_form())
 				.appendTo(r_cnt);
-				login();
+				
 				$(l_cnt+' ul.nav').empty();
+				$('form button[type=submit]').click(e=>{
+					e.preventDefault();
+					login();	
+				});
 				let arr =[
 					{name : 'emp_j', val : '사원가입'},
 					{name : 'emp_l', val : '사원로그인'},
@@ -49,8 +53,11 @@ auth = (()=>{
 							break;
 						case 'cust_l' : 
 							$(r_cnt).empty();
-
 							$(compo.cust_login_form()).appendTo(r_cnt);
+							$('form button[type=submit]').click(e=>{
+								e.preventDefault();
+								login();	
+							});
 							break;
 							};
 						});		
@@ -62,7 +69,7 @@ auth = (()=>{
 		};
 		
 		let login =()=>{
-				$('form button[type=submit]').click(()=>{
+				
 					let data = {
 							customerID : $('form input[name=uname]').val(),
 							password : $('form input[name=psw]').val()
@@ -76,7 +83,7 @@ auth = (()=>{
 						contentType : 'application/json',
 						success : d=>{
 							if(d.customerID!==''){
-								alert('로그인성공'+d.customerID);
+								alert('로그인성공'+d.customerName);
 								$(r_cnt).html(compo.cust_mypage());
 							}else{
 								alert('로그인실패');					
@@ -86,7 +93,7 @@ auth = (()=>{
 							alert('실패');							
 						}
 					});
-			});
+			
 		};
 		let join =()=>{};
 		let mypage =()=>{};
