@@ -36,8 +36,11 @@ auth = (()=>{
 					$('<li><a href="#">'+j.val+'</a></li>')
 					.appendTo('#left_content ul.nav')
 					.attr('name',j.name)
+					.attr('id', j.name)
 					.click(function(){
 						let that = $(this).attr('name');
+						 $(this).addClass('active');
+						 $(this).siblings().removeClass('active');
 						switch(that){
 						case 'emp_j' : 
 							$(r_cnt).empty();
@@ -86,7 +89,7 @@ auth = (()=>{
 							password : $('form input[name=psw]').val()
 							};
 					$.ajax({
-						url : _+'/users/cust/'+data.customerID,
+						url : _+'/customers/'+data.customerID,
 						type : 'post',
 						data : JSON.stringify(data),
 						dataType : 'json',
@@ -119,8 +122,8 @@ auth = (()=>{
 					postalCode : $('form input[name =post]').val()
 			};
 			$.ajax({
-				url : _+'/users/cust/',
-				type : 'post',
+				url : _+'/customers',
+				type : 'GET',
 				data : JSON.stringify(data),
 				dataType : 'json',
 				contentType : 'application/json',
@@ -155,7 +158,7 @@ auth = (()=>{
 
 			};
 			$.ajax({
-				url : _+'/users/emp',
+				url : _+'/emp',
 				type : 'post',
 				data : JSON.stringify(data),
 				dataType : 'json',
@@ -186,7 +189,7 @@ auth = (()=>{
 					name : $('form input[name=name]').val()
 					};
 			$.ajax({
-				url : _+'/users/emp/'+data.employeeID,
+				url : _+'/emp/'+data.employeeID,
 				type : 'post',
 				data : JSON.stringify(data),
 				dataType : 'json',
@@ -222,7 +225,7 @@ auth = (()=>{
 					postalCode : $('form input[name =post]').val()	
 			};
 			$.ajax({
-				url : _+'/cust/update',
+				url : _+'/customers/update',
 				type : 'put',
 				data : JSON.stringify(data),
 				dataType : 'json',
@@ -237,7 +240,7 @@ auth = (()=>{
 								
 						};
 			$.ajax({
-				url : _+'/cust/delete',
+				url : _+'/customers/delete',
 				type : 'delete',
 				data : JSON.stringify(data),
 				dataType : 'json',

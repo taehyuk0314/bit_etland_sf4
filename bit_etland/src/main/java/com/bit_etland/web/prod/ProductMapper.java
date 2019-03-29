@@ -8,12 +8,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductMapper {
-	public void insertProduct(Product pro);
+	public void insertProduct(Product prod);
 	public List<Product> selectProductsList(Map<?,?> map);
 	public List<Product> selectProducts(Map<?,?> map);
-	public Product selectProduct(Product pro);
+	public Product selectProduct(Product prod);
 	public int countProducts(Map<?,?> map);
-	public boolean existProduct(Product pro);
-	public void updateProduct(Product pro);
-	public void deleteProduct(Product pro);
+	public boolean existProduct(Product prod);
+	public void updateProduct(Product prod);
+	public void deleteProduct(Product prod);
 }

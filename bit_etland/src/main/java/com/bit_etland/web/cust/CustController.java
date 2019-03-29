@@ -3,7 +3,6 @@ package com.bit_etland.web.cust;
 
 
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,35 +15,30 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bit_etland.web.cmm.IConsumer;
 import com.bit_etland.web.cmm.IFunction;
 import com.bit_etland.web.cmm.PrintService;
 import com.bit_etland.web.cmm.Users;
-import com.bit_etland.web.emp.Employee;
-import com.bit_etland.web.emp.EmployeeMapper;
 
 
 @RestController
-@RequestMapping("/users")
 public class CustController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CustController.class);
 	@Autowired Customer cust;
 	@Autowired PrintService ps;
 	@Autowired CustomerMapper custMap;
-	@Autowired EmployeeMapper empMap;
 	@Autowired Map<String, Object> map;
 	@Autowired Users<?> user;
 	
-	@PostMapping("/cust/{userid}")
+	@PostMapping("/customers/{userid}")
 	public Customer login(
-			@PathVariable String user,
 			@PathVariable String userid,
-			@RequestBody Object param) {
+			@RequestBody Customer param) {
 		logger.info("----------cust진입------------");
+		System.out.println(param.toString());
 		IFunction i = (Object o) -> custMap.selectCustomer((Customer)param);
 		return (Customer)i.apply(param);			
 		};	
@@ -52,9 +46,8 @@ public class CustController {
 		
 		
 		@SuppressWarnings("unchecked")
-		@GetMapping("/cust/list")
+		@PostMapping("/customers/list")
 		public List<Users<?>> list(
-				@PathVariable String user,
 				@RequestBody Map<?, ?> param){
 			logger.info("----------list진입------------");
 			IFunction i = (Object o) -> custMap.selectCustomers(param);
@@ -65,9 +58,8 @@ public class CustController {
 		
 				
 		
-	@GetMapping("/cust")
+	@GetMapping("/customers")
 	public Map<?, ?> join(
-			@PathVariable String user,
 			@RequestBody Customer param) {
 		logger.info("----------cust진입------------");
 		IConsumer i = (Object o) -> custMap.insertCustomer(param);
@@ -77,9 +69,8 @@ public class CustController {
 		return map;			
 		};
 		
-	@PutMapping("/cust/{userid}")
+	@PutMapping("/customers/{userid}")
 	public Map<String, Object> update(
-			@PathVariable String user,
 			@PathVariable String userid,
 			@RequestBody Customer param) {
 		logger.info("----------cust진입------------");
@@ -90,9 +81,8 @@ public class CustController {
 		return map;			
 		};
 		
-	@DeleteMapping("/cust/{userid}")
+	@DeleteMapping("/customers/{userid}")
 	public Map<String, Object> delete(
-			@PathVariable String user,
 			@PathVariable String userid,
 			@RequestBody Customer param) {
 		logger.info("----------cust진입------------");

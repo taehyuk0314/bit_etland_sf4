@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bit_etland.web.cmm.IConsumer;
@@ -20,11 +19,8 @@ import com.bit_etland.web.cmm.IFunction;
 import com.bit_etland.web.cmm.PrintService;
 import com.bit_etland.web.cmm.Users;
 import com.bit_etland.web.cust.CustController;
-import com.bit_etland.web.cust.Customer;
-import com.bit_etland.web.cust.CustomerMapper;
 
 @RestController
-@RequestMapping("/users")
 public class EmployeeController {
 	private static final Logger logger = LoggerFactory.getLogger(CustController.class);
 	@Autowired Employee emp;
