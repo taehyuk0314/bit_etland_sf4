@@ -1,22 +1,25 @@
 var cust = cust||{};
 cust =(()=>{
 	let _,js,compojs,r_cnt,l_cnt;
-	let init =()=>{
+	let path =()=>{
 		_= $.ctx();
 		js= $.js();
 		compojs =js + '/component/compo.js';
 		prodjs = js+ '/product/prod.js';
 		r_cnt = '#right_content';
 		l_cnt = '#left_content';
-		onCreate();
 	};
-	let onCreate =()=>{
-		setContentView();
+	let init =(x)=>{
+		path();
+		onCreate(x);
 	};
-	let setContentView =()=>{
+	let onCreate =(x)=>{
+		setContentView(x);
+	};
+	let setContentView =(x)=>{
 		$.getScript(compojs,()=>{
 			$('#left_content ul.nav').empty();
-			mypage();
+			mypage(x);
 			let arr=[
 				{ name : 'myp' ,txt : '마이페이지'},
 				{ name : 'upd' ,txt : '정보수정'},
@@ -43,10 +46,18 @@ cust =(()=>{
 					case 'upd':
 						$(r_cnt).empty();
 						$(compo.cust_update()).appendTo(r_cnt);
+						$('form button[type=submit]').click(e=>{
+							e.preventDefault();
+							update(x);	
+						});
 						break;
 					case 'del':
 						$(r_cnt).empty();
-						$(compo.cust_update()).appendTo(r_cnt);
+						$(compo.cust_remove()).appendTo(r_cnt);
+						$('form button[type=submit]').click(e=>{
+							e.preventDefault();
+							remove(x);
+						});
 						break;
 					case 'shop':
 						alert('쇼핑몰 클릭');
@@ -71,13 +82,89 @@ cust =(()=>{
 		$('#mypage').addClass('active');
 		});
 	};
-	
-	
-	let mypage =()=>{
+	let update =(x)=>{
+		path();
+		let data={
+				customerID : x.customerID,
+				password : $('form input[name =pass]').val(),
+				phone : $('form input[name =phone]').val(),
+				city : $('form input[name =city]').val(),
+				address : $('form input[name =address]').val(),
+				postalCode : $('form input[name =post]').val()	
+		};
+		$.ajax({
+			url : _+'/customers/update',
+			type : 'put',
+			data : JSON.stringify(data),
+			dataType : 'json',
+			contentType : 'application/json; charset=utf-8',
+			success : d=>{
+				if(d.customerID!==''){
+					alert('정보수정완료');
+					mypage();
+				}else{
+					alert('올바르지않은 문구입니다');
+				}
+			},
+			error : e =>{
+				alert('실패!!');
+			}
+		});
+	};
+	let remove =()=>{
+		path();
+		let data ={
+			password : $('form input[name =pass]').val()
+		}
+		$.ajax({
+			url : _+'/customers/delete',
+			type : 'delete',
+			data : JSON.stringify(data),
+			dataType : 'json',
+			contentType : 'application/json',
+			success : d=>{
+				if(d.password!==''){
+					alert('이용해주셔서 감사합니다');
+					$.getScript(js+'/common/auth.js',()=>{
+						auth.init();
+					});
+						
+					
+				}else{
+					alert('비밀번호가 일치하지않습니다');
+				}
+			},
+			error : e =>{
+				alert('실패');
+			}
+		});
+	};
+	let mypage =(x)=>{
 		$(r_cnt).html(compo.cust_mypage);				
 	};
-	
-	return {init : init};
+	let list =()=>{
+		path();
+		$.getScript(compojs,()=>{
+			$(r_cnt).html(compo.cust_list);
+			$.getJSON(_+'/customers/page/1',d=>{
+				$.each(d,(i,j)=>{
+					$('<tr> <td>'+j.customerID+'</td>'
+							+'<td>'+j.customerName+'</td>'
+							+'<td>'+j.ssn+'</td>'
+							+'<td>'+j.photo+'</td>'
+							+'<td>'+j.phone+'</td>'
+							+'<td>'+j.city+'</td>'
+							+'<td>'+j.address+'</td>'
+							+'<td>'+j.postalCode+'</td> </tr>')
+					.appendTo('#cust_tab');
+				});
+			});
+		});
+			
+	};
+
+	return {init : init,
+		list : list};
 })();
 
 /*

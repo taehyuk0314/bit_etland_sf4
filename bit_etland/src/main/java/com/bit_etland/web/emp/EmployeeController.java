@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bit_etland.web.cmm.IConsumer;
 import com.bit_etland.web.cmm.IFunction;
+import com.bit_etland.web.cmm.ISupplier;
 import com.bit_etland.web.cmm.PrintService;
 import com.bit_etland.web.cmm.Users;
 import com.bit_etland.web.cust.CustController;
@@ -29,19 +30,17 @@ public class EmployeeController {
 	@Autowired Map<String, Object> map;
 	@Autowired Users<?> user;
 	
-	@PostMapping("/emp/{userid}")
-	public Employee access(
-			@PathVariable String userid,
-			@RequestBody Object param) {
-		logger.info("----------cust진입------------");
-		IFunction i = (Object o) -> empMap.selectEmployee((Employee)param);
-		return (Employee)i.apply(param);			
-		};	
+	@GetMapping("/employees")
+	public Employee access() {
+		logger.info("----------사원접속진입------------");
+		ISupplier i = () -> empMap.findOneEmployee();
+		return (Employee)i.get();			
+		}	
 		
 		
 		
 		@SuppressWarnings("unchecked")
-		@GetMapping("/emp/list")
+		@GetMapping("/employees/list")
 		public List<Users<?>> list(
 				@RequestBody Map<?, ?> param){
 			logger.info("----------list진입------------");
@@ -53,7 +52,7 @@ public class EmployeeController {
 		
 				
 		
-	@GetMapping("/emp")
+	@PostMapping("/employees")
 	public Map<?, ?> register(
 			@RequestBody Employee param) {
 		logger.info("----------cust진입------------");
@@ -62,9 +61,9 @@ public class EmployeeController {
 		map.clear();
 		map.put("msg", "SUCCESS");
 		return map;			
-		};
+		}
 		
-	@PutMapping("/emp/{userid}")
+	@PutMapping("/employees/{userid}")
 	public Map<String, Object> update(
 			@PathVariable String userid,
 			@RequestBody Employee param) {
@@ -74,9 +73,9 @@ public class EmployeeController {
 		map.clear();
 		map.put("msg", "SUCCESS");
 		return map;			
-		};
+		}
 		
-	@DeleteMapping("/emp/{userid}")
+	@DeleteMapping("/employees/{userid}")
 	public Map<String, Object> delete(
 
 			@PathVariable String userid,
@@ -87,5 +86,5 @@ public class EmployeeController {
 		map.clear();
 		map.put("msg", "SUCCESS");
 		return map;			
-		};	
+		}
 }

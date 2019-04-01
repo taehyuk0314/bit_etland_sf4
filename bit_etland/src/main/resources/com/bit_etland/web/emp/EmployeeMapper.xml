@@ -2,35 +2,17 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bit_etland.web.cust.CustomerMapper">
-  <select id="selectCustomer" resultType="com.bit_etland.web.cust.Customer">
-    SELECT CUSTOMER_ID customerID, 
-    		CUSTOMER_NAME customerName, 
-    		PASSWORD, 
-    		SSN, 
-    		PHOTO,
-    		PHONE, 
-    		CITY, 
-    		ADDRESS, 
-    		POSTALCODE
-     FROM CUSTOMERS 
-    	WHERE CUSTOMER_ID LIKE #{customerID} 
-     <if test="password !=null">
-    	AND PASSWORD LIKE #{password}
-     </if>
+<mapper namespace="com.bit_etland.web.emp.EmployeeMapper">
+  <select id="findOneEmployee" resultType="com.bit_etland.web.emp.Employee">
+    SELECT EMPLOYEE_ID employeeID,
+				   MANAGER,
+				   NAME,
+				   BIRTH_DATE birthDate,
+				   PHOTO,
+				   NOTES
+     FROM EMPLOYEES
   </select>
-  <select id ="selectCustomers" resultType="com.bit_etland.web.cust.Customer" parameterType="com.bit_etland.web.cmm.Proxy">
-  	    SELECT CUSTOMER_ID customerID, 
-    		CUSTOMER_NAME customerName, 
-    		SSN, 
-    		PHOTO,
-    		PHONE, 
-    		CITY, 
-    		ADDRESS, 
-    		POSTALCODE
-     FROM CUSTOMERS 
-  </select>
-  <insert id="insertCustomer"
+<!--   <insert id="insertCustomer"
 		   parameterType="com.bit_etland.web.cust.Customer"
 		  flushCache="true"
 		  statementType="PREPARED"
@@ -55,6 +37,6 @@
 		  flushCache="true"
 		  statementType="PREPARED"
 		  timeout="20">
-		  DELETE FROM CUSTOMERS WHERE PASSWORD LIKE #{password}
-  </delete>
+		  DELETE FROM CUSTOMERS WHERE CUSTOMER_ID LIKE #{customerID}
+  </delete> -->
 </mapper>

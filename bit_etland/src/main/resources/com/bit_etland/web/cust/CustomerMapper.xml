@@ -19,6 +19,17 @@
     	AND PASSWORD LIKE #{password}
      </if>
   </select>
+  <select id ="selectCustomers" resultType="com.bit_etland.web.cust.Customer" parameterType="com.bit_etland.web.cmm.Proxy">
+  	    SELECT CUSTOMER_ID customerID, 
+    		CUSTOMER_NAME customerName, 
+    		SSN, 
+    		PHOTO,
+    		PHONE, 
+    		CITY, 
+    		ADDRESS, 
+    		POSTALCODE
+     FROM CUSTOMERS 
+  </select>
   <insert id="insertCustomer"
 		   parameterType="com.bit_etland.web.cust.Customer"
 		  flushCache="true"
@@ -44,6 +55,6 @@
 		  flushCache="true"
 		  statementType="PREPARED"
 		  timeout="20">
-		  DELETE FROM CUSTOMERS WHERE CUSTOMER_ID LIKE #{customerID}
+		  DELETE FROM CUSTOMERS WHERE PASSWORD LIKE #{password}
   </delete>
 </mapper>

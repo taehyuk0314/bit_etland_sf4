@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bit_etland.web.cmm.IConsumer;
 import com.bit_etland.web.cmm.IFunction;
+import com.bit_etland.web.cmm.ISupplier;
 import com.bit_etland.web.cmm.PrintService;
+import com.bit_etland.web.cmm.Proxy;
 import com.bit_etland.web.cmm.Users;
 
 
@@ -32,6 +34,7 @@ public class CustController {
 	@Autowired CustomerMapper custMap;
 	@Autowired Map<String, Object> map;
 	@Autowired Users<?> user;
+	@Autowired Proxy pxy;
 	
 	@PostMapping("/customers/{userid}")
 	public Customer login(
@@ -46,19 +49,25 @@ public class CustController {
 		
 		
 		@SuppressWarnings("unchecked")
-		@PostMapping("/customers/list")
-		public List<Users<?>> list(
-				@RequestBody Map<?, ?> param){
+		@GetMapping("/customers/page/1")
+		public List<Customer> list(){
 			logger.info("----------list진입------------");
-			IFunction i = (Object o) -> custMap.selectCustomers(param);
-			
-//			ps.accept(ls);
-			return (List<Users<?>>)i.apply(param);
+			map.clear();
+			//page_num  page_size block_size
+			map.put("page_num", "1");
+			map.put("page_size", "5");
+			map.put("block_size", "5");
+			map.put("rowCount", "29");
+			pxy.carryOut(map);
+			IFunction i = (Object o) -> custMap.selectCustomers(pxy);
+			List<Customer> ls = (List<Customer>) i.apply(pxy);
+//			ISupplier i =() ->custMap.selectCustomerList();
+			return ls;
 		}
 		
 				
 		
-	@GetMapping("/customers")
+	@PostMapping("/customers")
 	public Map<?, ?> join(
 			@RequestBody Customer param) {
 		logger.info("----------cust진입------------");
@@ -69,11 +78,11 @@ public class CustController {
 		return map;			
 		};
 		
-	@PutMapping("/customers/{userid}")
-	public Map<String, Object> update(
-			@PathVariable String userid,
+	@PutMapping("/customers/update")
+	public Map<?, ?> update(
 			@RequestBody Customer param) {
-		logger.info("----------cust진입------------");
+		logger.info("----------업데이트진입------------");
+		System.out.println(param.toString());
 		IConsumer i = (Object o) -> custMap.updateCustomer(param);
 		i.accept(param);
 		map.clear();
@@ -81,11 +90,10 @@ public class CustController {
 		return map;			
 		};
 		
-	@DeleteMapping("/customers/{userid}")
-	public Map<String, Object> delete(
-			@PathVariable String userid,
+	@DeleteMapping("/customers/delete")
+	public Map<?, ?> delete(
 			@RequestBody Customer param) {
-		logger.info("----------cust진입------------");
+		logger.info("----------delete진입------------");
 		IConsumer i = (Object o) -> custMap.deleteCustomer(param);
 		i.accept(param);
 		map.clear();

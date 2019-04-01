@@ -97,8 +97,7 @@ auth = (()=>{
 						success : d=>{
 							if(d.customerID!==''){
 								alert('로그인성공'+d.customerName);
-//								$(r_cnt).html(compo.cust_mypage());
-								cust.init();
+								cust.init(d);
 							}else{
 								alert('로그인실패');					
 							}
@@ -123,7 +122,7 @@ auth = (()=>{
 			};
 			$.ajax({
 				url : _+'/customers',
-				type : 'GET',
+				type : 'post',
 				data : JSON.stringify(data),
 				dataType : 'json',
 				contentType : 'application/json',
@@ -158,7 +157,7 @@ auth = (()=>{
 
 			};
 			$.ajax({
-				url : _+'/emp',
+				url : _+'/employees',
 				type : 'post',
 				data : JSON.stringify(data),
 				dataType : 'json',
@@ -184,71 +183,38 @@ auth = (()=>{
 			});
 		};
 		let access =()=>{
-			let data = {
-					employeeID : $('form input[name=employeeID]').val(),
-					name : $('form input[name=name]').val()
-					};
-			$.ajax({
-				url : _+'/emp/'+data.employeeID,
-				type : 'post',
-				data : JSON.stringify(data),
-				dataType : 'json',
-				contentType : 'application/json',
-				success : d=>{
-					if(d.employeeID!==''){
-
-						$(r_cnt).html(compo.cust_mypage());
-						$('form button[type=submit]').click(e=>{
-							e.preventDefault();
-							$(r_cnt).html(compo.cust_update());
-							update();	
-							
-						});
+			let ok = confirm('사원 입니까?');
+			if(ok){
+				let emp_no = prompt('사원번호 입력하세요');
+				$.getJSON( _+'/employees',d=>{
+					if(emp_no==d.employeeID){
+						alert('사원인증');
+						let emp_name = prompt('이름을 입력하세요');	
+						if(emp_name ===d.name){
+							alert('사원이름 '+d.name);
+							$.getScript(js+'/customer/cust.js',()=>{
+								cust.list();
+							});
+						}else{
+							alert('이름이 일치하지 않습니다');
+						}
 					}else{
-						alert('로그인실패');					
+						//사원번호가 일치하지 않습니다.
+						alert('사원번호가 일치하지 않습니다');
 					}
-				},
-				error : e =>{
-					alert('실패');							
-				}
-			});
+				});
+				
+				
+			}else{
+				alert('사원전용페이지 입니다');
+				//사원 전용 페이지 입니다
+				//되돌아가기 버튼이 보인다
+			}
+
 		};
-		let update =()=>{
-			let data={
-					customerID : $('form input[name =cid]').val(),
-					customerName : $('form input[name =cname]').val(),
-					password : $('form input[name =pass]').val(),
-					ssn : $('form input[name =ssn]').val(),
-					phone : $('form input[name =phone]').val(),
-					city : $('form input[name =city]').val(),
-					address : $('form input[name =address]').val(),
-					postalCode : $('form input[name =post]').val()	
-			};
-			$.ajax({
-				url : _+'/customers/update',
-				type : 'put',
-				data : JSON.stringify(data),
-				dataType : 'json',
-				contentType : 'application/json',
-				success : d=>{},
-				error : e =>{}
-			});
-		};
+
 		
-		let remove =()=>{
-			let data={
-								
-						};
-			$.ajax({
-				url : _+'/customers/delete',
-				type : 'delete',
-				data : JSON.stringify(data),
-				dataType : 'json',
-				contentType : 'application/json',
-				success : d=>{},
-				error : e =>{}
-			});
-		};
+
 		let mypage =()=>{
 			
 		};
