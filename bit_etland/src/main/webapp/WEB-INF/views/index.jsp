@@ -15,7 +15,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <style>
-  html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
+  
   #cust_tab {
  font-family: arial, sans-serif;
  border-collapse: collapse;
@@ -51,59 +51,7 @@
 }
 .pagination a:hover:not(.active) {
    background-color: #ddd;
-}
-
-.grid-item2{
-    display: grid;
-     grid-template-columns: auto auto auto auto;
-     background-color: #F7BE81;
-     padding: 5px;
-}
-.grid-item2 {
- background-color: rgba(255, 255, 255, 0.8);
- border: 1px solid rgba(0, 0, 0, 0.8);
- padding: 5px;
- font-size: 30px;
- text-align: center;
-}
-#itemd_1{
-   grid-column-start: 1;
-   grid-column-end: 4;
-}
-#itemd_2{
-   grid-column-start: 4;
-   grid-column-end: 5;
-}
-#itemd_3{
-   grid-column-start: 1;
-   grid-column-end: 5;
-}
-
-.center {
-  text-align: center;
-}
-
-.pagination {
-  display: inline-block;
-}
-
-.pagination a {
-  color: black;
-  float: left;
-  padding: 8px 16px;
-  text-decoration: none;
-  transition: background-color .3s;
-  border: 1px solid #ddd;
-  margin: 0 4px;
-}
-
-.pagination a.active {
-  background-color: #4CAF50;
-  color: white;
-  border: 1px solid #4CAF50;
-}
-.pagination a:hover:not(.active) {background-color: #ddd;}
-
+} 
 
 
   body {font-family: Arial, Helvetica, sans-serif;}
@@ -198,7 +146,7 @@ span.psw {
 <div id="container" class="container-fluid">
   <div id="full_content" class="row content">
     <div id="left_content" class="col-sm-3 sidenav">
-      <h4>John's Blog</h4>
+      <h4 id="nav_name">John's Blog</h4>
       <ul class="nav nav-pills nav-stacked">
         <li class="active"><a href="#">Home</a></li>
         <li><a href="#">Friends</a></li>

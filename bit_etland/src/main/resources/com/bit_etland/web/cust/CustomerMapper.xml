@@ -2,33 +2,53 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!--
+ 				   customerID,
+				   customerName,
+				   password,
+				   ssn,// 900101-1
+				   photo,
+				   phone,
+				   city,
+				   address,
+				   postalCode
+ --> 
 <mapper namespace="com.bit_etland.web.cust.CustomerMapper">
+  <resultMap id="result" type="hashmap">
+  <id property="customerID" column="CUSTOMER_ID" />
+  <result property="customerName" column="CUSTOMER_NAME"/>
+  <result property="password" column="PASSWORD"/>
+  <result property="ssn" column="SSN"/>
+  <result property="photo" column="PHOTO"/>
+  <result property="phone" column="PHONE"/>
+  <result property="city" column="CITY"/>
+  <result property="address" column="ADDRESS"/>
+  <result property="postalCode" column="POSTALCODE"/>
+  <result property="rnum" column="RNUM"/>
+</resultMap>
   <select id="selectCustomer" resultType="com.bit_etland.web.cust.Customer">
-    SELECT CUSTOMER_ID customerID, 
-    		CUSTOMER_NAME customerName, 
-    		PASSWORD, 
-    		SSN, 
-    		PHOTO,
-    		PHONE, 
-    		CITY, 
-    		ADDRESS, 
-    		POSTALCODE
+    SELECT 
+    	CUSTOMER_ID customerID,
+		CUSTOMER_NAME customerName,
+		SSN,
+		PHOTO,
+		PHONE,
+		CITY,
+		ADDRESS,
+		POSTALCODE
      FROM CUSTOMERS 
     	WHERE CUSTOMER_ID LIKE #{customerID} 
      <if test="password !=null">
     	AND PASSWORD LIKE #{password}
      </if>
   </select>
-  <select id ="selectCustomers" resultType="com.bit_etland.web.cust.Customer" parameterType="com.bit_etland.web.cmm.Proxy">
-  	    SELECT CUSTOMER_ID customerID, 
-    		CUSTOMER_NAME customerName, 
-    		SSN, 
-    		PHOTO,
-    		PHONE, 
-    		CITY, 
-    		ADDRESS, 
-    		POSTALCODE
-     FROM CUSTOMERS 
+
+  <select id ="selectCustomers" resultMap="result" parameterType="com.bit_etland.web.cmm.Proxy">
+SELECT @ROWNUM:=@ROWNUM+1 AS rnum,
+            C.*
+    FROM CUSTOMERS C, (SELECT @ROWNUM:=0)TMP
+    ORDER BY rnum DESC
+    limit #{startRow}, #{pageSize};
   </select>
   <insert id="insertCustomer"
 		   parameterType="com.bit_etland.web.cust.Customer"

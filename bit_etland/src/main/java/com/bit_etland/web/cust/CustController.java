@@ -49,20 +49,24 @@ public class CustController {
 		
 		
 		@SuppressWarnings("unchecked")
-		@GetMapping("/customers/page/1")
-		public List<Customer> list(){
+		@GetMapping("/customers/page/{page}")
+		public Map<?,?> list(){
 			logger.info("----------list진입------------");
 			map.clear();
 			//page_num  page_size block_size
 			map.put("page_num", "1");
 			map.put("page_size", "5");
 			map.put("block_size", "5");
-			map.put("rowCount", "29");
+			map.put("rowCount", "10");;
 			pxy.carryOut(map);
 			IFunction i = (Object o) -> custMap.selectCustomers(pxy);
-			List<Customer> ls = (List<Customer>) i.apply(pxy);
+			List<?> ls = (List<?>) i.apply(pxy);
 //			ISupplier i =() ->custMap.selectCustomerList();
-			return ls;
+			ps.accept("리스트::"+ls);
+			map.clear();
+			map.put("ls", ls);
+			map.put("pxy", pxy);
+			return map;
 		}
 		
 				

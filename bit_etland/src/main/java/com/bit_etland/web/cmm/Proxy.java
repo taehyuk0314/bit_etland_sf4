@@ -28,7 +28,7 @@ public class Proxy {
 
 		int nmg = rowCount % pageSize;
 		int pageCount = (nmg == 0)?rowCount / pageSize:rowCount / pageSize+1;
-		startRow = (pageNum -1) *pageSize + 1;
+		startRow = (pageNum -1) *pageSize +1;
 		System.out.println("스타트로우: "+startRow);
 		endRow = (rowCount > pageNum * pageSize)? pageNum * pageSize: rowCount;
 		
