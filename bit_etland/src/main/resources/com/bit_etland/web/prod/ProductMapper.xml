@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit_etland.web.prod.ProductMapper">
+  <resultMap id="result" type="hashmap">
+  <id property="productID" column="PRODUCT_ID" />
+  <result property="productName" column="PRODUCT_NAME"/>
+  <result property="supplierID" column="SUPPLIER_ID"/>
+  <result property="categoryID" column="CATEGORY_ID"/>
+  <result property="unit" column="UNIT"/>
+  <result property="price" column="PRICE"/>
+  <result property="photo" column="PHOTO"/>
+</resultMap>
+  <select id ="selectProducts" resultMap="result" parameterType="com.bit_etland.web.cmm.Proxy">
+SELECT @ROWNUM:=@ROWNUM+1 AS rnum,
+            C.*
+    FROM PRODUCTS C, (SELECT @ROWNUM:=0)TMP
+    ORDER BY rnum DESC
+    limit #{startRow}, #{pageSize};
+  </select>
+    <select id ="countProducts" resultType="int">
+SELECT COUNT(*) FROM PRODUCTS;
+  </select>
+
+</mapper>

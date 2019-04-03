@@ -79,14 +79,14 @@ cust =(()=>{
 	let mypage =(x)=>{
 		$(r_cnt).html(compo.cust_mypage);				
 	};
-	let list =()=>{
+	let list =(f)=>{
 		path();
 		$.getScript(js+'/employee/emp.js',()=>{
 			emp.emp_nav();
 		});
 		$.getScript(compojs,()=>{
 			$(r_cnt).html(compo.cust_list);
-			$.getJSON(_+'/customers/page/1',d=>{
+			$.getJSON(_+'/customers/page/'+f,d=>{
 				$.each(d.ls,(i,j)=>{
 					$('<tr> <td>'+j.rnum+'</td>'
 							+'<td>'+j.customerID+'</td>'
@@ -103,23 +103,39 @@ cust =(()=>{
 		$('<div style="height: 50px" id="content_1"></div>')
 		.appendTo('#content_2');
 
-		let html ='<div class="center">';
-		html +='<div class="pagination">';
+		let html ='<div class="center"> <div class="pagination">';
+		html +='</div></div>';
+		$(html).appendTo('#content_2');
 		if(d.pxy.existPrev){
-			html += '<a href=${ctx}/customer.do?cmd=cust_list&page=list&page_num=${pagination.prevBlock}>&laquo;</a>';
+			$('<a>&laquo;</a>').appendTo('.pagination')
+			.click(function(){
+				list(d.pxy.prevBlock);
+			});
 		}
-		for(let i=1;i<6;i++){
-			if(d.pxy.pageNum ==status.index){
-				html +='<a href="#"class=page active>'+i+'</a>';
+		let i=0;
+		for(i=d.pxy.startPage;i<=d.pxy.endPage;i++){
+			if(d.pxy.pageNum ==i){
+				$('<a class=page active>'+i+'</a>')
+				.appendTo('.pagination')
+				.click(function(){
+					list($(this).text());
+				});
 			}else{
-				html +='<a href="#"class=page>'+i+'</a>';
+				$('<a class=page>'+i+'</a>')
+				.appendTo('.pagination')
+				.click(function(){
+					list($(this).text());
+				});
 			}
 		}
-//		if(d.pxy.existNext){
-			html +='<a href=${ctx}/customer.do?cmd=cust_list&page=list&page_num=${pagination.nextBlock} >&raquo;</a>';
-//		}
-		html +='</div></div>';
-		$(html).appendTo('#content_1');
+		if(d.pxy.existNext){
+			$('<a>&raquo;</a>').appendTo('.pagination')
+			.click(function(){
+				list(d.pxy.nextBlock);
+			});
+			
+		};
+		
 		});
 		});
 		/**

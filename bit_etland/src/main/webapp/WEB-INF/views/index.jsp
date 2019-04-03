@@ -21,6 +21,11 @@
  border-collapse: collapse;
  width: 100%;
 }
+  #cust_tab {
+ font-family: arial, sans-serif;
+ border-collapse: collapse;
+ width: 100%;
+}
 #cust_tab td, th {
  border: 1px solid #dddddd;
  text-align: left;

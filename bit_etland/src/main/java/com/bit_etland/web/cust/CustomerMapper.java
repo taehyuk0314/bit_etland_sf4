@@ -13,7 +13,7 @@ public interface CustomerMapper {
 	public List<Customer> selectCustomerList(Map<?,?> map);
 	public List<?> selectCustomers(Proxy pxy);
 	public Customer selectCustomer(Customer cust);
-	public int countCustomers(Map<?,?> map);
+	public int countCustomers();
 	public boolean existsCustomerID(Customer cust);
 	public void updateCustomer(Customer cust);
 	public Map<String, Object> selectProfile(Map<?,?> map);

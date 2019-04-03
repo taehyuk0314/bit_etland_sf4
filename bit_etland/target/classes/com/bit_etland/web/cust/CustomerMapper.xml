@@ -50,6 +50,9 @@ SELECT @ROWNUM:=@ROWNUM+1 AS rnum,
     ORDER BY rnum DESC
     limit #{startRow}, #{pageSize};
   </select>
+    <select id ="countCustomers" resultType="int">
+SELECT COUNT(*) FROM CUSTOMERS;
+  </select>
   <insert id="insertCustomer"
 		   parameterType="com.bit_etland.web.cust.Customer"
 		  flushCache="true"
@@ -59,6 +62,7 @@ SELECT @ROWNUM:=@ROWNUM+1 AS rnum,
             #{customerID}, #{customerName}, #{password}, #{ssn},#{phone},#{city},#{address},#{postalCode}
         )
   </insert>
+  
   <update
 		  id="updateCustomer"
 		  parameterType="com.bit_etland.web.cust.Customer"

@@ -30,18 +30,41 @@ var emp = emp || {};
 				{name : 'prod_d' , val : '상품 삭제'},
 				{name : 'prod_st' , val : '상품 통계'}
 				];
-			$.each(arr,(i,j)=>{
-				$('<li><a href="#">'+j.val+'</a></li>')
-				.appendTo(l_cnt+' ul.nav')
-				.attr('name',j.name)
-				.attr('id', j.name)
-				.click(function(){
-					let that = $(this).attr('name');
-					$(this).addClass('active');
-					$(this).siblings().removeClass('active');
-				})
+			$.getScript(compojs,()=>{
+				
+				$.each(arr,(i,j)=>{
+					$('<li><a href="#">'+j.val+'</a></li>')
+					.appendTo(l_cnt+' ul.nav')
+					.attr('name',j.name)
+					.attr('id', j.name)
+					.click(function(){
+						let that = $(this).attr('name');
+						$(this).addClass('active');
+						$(this).siblings().removeClass('active');
+						switch (that) {
+						case 'cust_l':
+							cust.list(1);
+							break;
+						case 'prod_r':
+							$(r_cnt).empty();
+							$(compo.prod_register()).appendTo(r_cnt);
+							$('form button[type=submit]').click(e=>{
+								e.preventDefault();
+							});
+							break;
+						case 'prod_l':
+							$.getScript(prodjs,()=>{
+									prod.list(1);
+							});
+							break;
+							
+						default:
+							break;
+						}
+					})
+				});
+				$('#cust_l').addClass('active');
 			});
-			$('#cust_l').addClass('active');
 		};	
 	
 		return{init : init,

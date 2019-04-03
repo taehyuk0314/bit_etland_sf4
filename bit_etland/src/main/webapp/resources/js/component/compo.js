@@ -349,7 +349,7 @@ compo ={
 				+'  </div>'
 				+'</div>'
 				},
-				prod_post : ()=>{
+				prod_register_origin : ()=>{
 					return '<div class="col-md-8 order-md-1">'
 					+'          <h4 class="mb-3">Billing address</h4>'
 					+'          <form class="needs-validation" novalidate="">'
@@ -498,7 +498,115 @@ compo ={
 					+'          </form>'
 					+'       </div>'
 				},
-				/*prod_post : ()=>{
+				/*
+				 * productID,
+				   productName,
+				   supplierID,
+				   categoryID,
+				   unit,
+				   price*/
+				prod_register : ()=>{
+					return '<div class="col-md-8 order-md-1">'
+					+'          <h4 class="mb-3">상품 등록</h4>'
+					+'          <form class="needs-validation" novalidate="">'
+					+'            <div class="row">'
+					+'              <div class="col-md-6 mb-3">'
+					+'                <label for="firstName">카테고리</label>'
+					+'                <input type="text" class="form-control" id="firstName" placeholder="" value="스마트폰" required="">'
+					+'                <div class="invalid-feedback">'
+					+'                  Valid first name is required.'
+					+'                </div>'
+					+'              </div>'
+					+'              <div class="col-md-6 mb-3">'
+					+'                <label for="lastName">상품명</label>'
+					+'                <input type="text" class="form-control" id="lastName" placeholder="" value="" required="">'
+					+'                <div class="invalid-feedback">'
+					+'                  Valid last name is required.'
+					+'                </div>'
+					+'              </div>'
+					+'            </div>'
+
+
+
+					+'            <div class="mb-3">'
+					+'              <label for="price">가격 <span class="text-muted">(Optional)</span></label>'
+					+'              <input type="text" class="form-control" id="price" placeholder="가격(만원 단위)">'
+					+'              <div class="invalid-feedback">'
+					+'                가격입력'
+					+'              </div>'
+					+'            </div>'
+					+'            <div class="row">'
+					+'              <div class="col-md-5 mb-3">'
+					+'                <label for="country">공급업체</label>'
+					+'                <select class="custom-select d-block w-100" id="country" required="">'
+					+'                  <option value="">Choose...</option>'
+					+'                  <option value="samsung">삼성전자</option>'
+					+'                  <option value="lge">LG전자</option>'
+					+'                  <option value="apple">애플</option>'
+					+'                  <option value="xiami">샤오미</option>'
+					+'                  <option>United States</option>'
+					+'                </select>'
+					+'                </div>'
+					+'            <hr class="mb-4">'
+					+'                <div class="invalid-feedback">'
+					+'                사은품 선택(두가지 선택)'
+					+'                </div>'
+					+'            <div class="custom-control custom-checkbox">'
+					+'              <input type="checkbox" class="custom-control-input" id="same-address">'
+					+'              <label class="custom-control-label" for="same-address">필 름</label>'
+					+'            </div>'
+					+'            <div class="custom-control custom-checkbox">'
+					+'              <input type="checkbox" class="custom-control-input" id="same-address">'
+					+'              <label class="custom-control-label" for="same-address">보조배터리</label>'
+					+'            </div>'
+					+'            <div class="custom-control custom-checkbox">'
+					+'              <input type="checkbox" class="custom-control-input" id="same-address">'
+					+'              <label class="custom-control-label" for="same-address">케이스</label>'
+					+'            </div>'
+					+'            <hr class="mb-4">'
+					+'            <h4 class="mb-3">색상을 선택해주세요</h4>'
+					
+					+'            <div class="d-block my-3">'
+					+'              <div class="custom-control custom-radio">'
+					+'                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked="" required="">'
+					+'                <label class="custom-control-label" for="credit">화이트</label>'
+					+'              </div>'
+					+'              <div class="custom-control custom-radio">'
+					+'                <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required="">'
+					+'                <label class="custom-control-label" for="debit">블 랙</label>'
+					+'              </div>'
+					+'              <div class="custom-control custom-radio">'
+					+'                <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required="">'
+					+'                <label class="custom-control-label" for="paypal">블 루</label>'
+					+'              </div>'
+					+'            </div>'
+					+'            <div class="row">'
+					+'              <div class="col-md-6 mb-3">'
+					+'                <label for="cc-name">제품 설명</label>'
+					+'                <input type="textarea" class="form-control" id="cc-name" placeholder="" required="">'
+					+'                <small class="text-muted">Full name as displayed on card</small>'
+
+					+'              </div>'
+					+'              </div>'
+					+'            </div>'
+					+'            <div class="row">'
+					+'              <div class="col-md-3 mb-3">'
+					+'                <label for="cc-expiration">이미지 등록(파일업로드)</label>'
+					+'                <input type="file" class="form-control" id="cc-expiration" placeholder="" required="">'
+
+					+'              </div>'
+					+'              <div class="col-md-3 mb-3">'
+					+'                <label for="cc-cvv">이미지 등록(드래그&드랍)</label>'
+					+'                <input type="file" class="form-control" id="cc-cvv" placeholder="" required="">'
+
+					+'              </div>'
+					+'            </div>'
+					+'            <hr class="mb-4">'
+					+'            <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>'
+					+'          </form>'
+					+'       </div>'
+				},
+				prod_post : ()=>{
 					return '<div class="container">'
 		            +'<div class="form-group">'
 		            +'  <label for="usr">Name:</label>'
@@ -542,7 +650,8 @@ compo ={
 		            +'  <textarea class="form-control" rows="5" id="comment"></textarea>'
 		            +'</div>'
 		            +'</div>'
-				},*/
+				},
+				
 				cust_list : ()=>{
 					return '<div class="grid-item" id="content_1">'
 				       +'<h1><font style="font-size: 30px">사원 리스트</font>'
@@ -563,5 +672,24 @@ compo ={
 				            +'</tr>'
 				          +'</table>'
 
+				},
+				prod_list : ()=>{
+					return '<div class="grid-item" id="content_1">'
+				       +'<h1><font style="font-size: 30px">사원 리스트</font>'
+				       +'</h1>'
+				      +'</div>'
+				      +'<div class="grid-item" id="content_2">'
+				          +'<table id="cust_tab">'
+				            +'<tr>'
+				            +'<th>NO.</th>'
+				            +'<th>상품번호</th>'
+				            +'<th>상품이름</th>'
+				            +'<th>생성자아이디</th>'
+				            +'<th>카테고리아이디</th>'
+				            +'<th>단위</th>'
+				            +'<th>가격</th>'
+				            +'<th>사진</th>'
+				            +'</tr>'
+				          +'</table>'
 				}
 }	

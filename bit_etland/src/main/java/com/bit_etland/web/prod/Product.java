@@ -12,6 +12,7 @@ public class Product {
 				   supplierID,
 				   categoryID,
 				   unit,
+				   photo,
 				   price;
 
 	

@@ -187,13 +187,13 @@ auth = (()=>{
 			if(ok){
 				let emp_no = prompt('사원번호 입력하세요');
 				$.getJSON( _+'/employees',d=>{
-					if(emp_no==d.employeeID){
+					if(emp_no===d.employeeID){
 						alert('사원인증');
 						let emp_name = prompt('이름을 입력하세요');	
 						if(emp_name ===d.name){
 							alert('사원이름 '+d.name);
 							$.getScript(js+'/customer/cust.js',()=>{
-								cust.list();
+								cust.list(1);
 							});
 							
 						}else{
@@ -418,7 +418,7 @@ auth = (()=>{
 					if(emp_name ===d.name){
 						alert('사원이름 '+d.name);
 						$.getScript(js+'/customer/cust.js',()=>{
-							cust.list();
+							cust.list(1);
 						});
 						
 					}else{

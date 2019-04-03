@@ -10,12 +10,9 @@ import org.springframework.stereotype.Component;
 import lombok.Data;
 @Component @Data @Lazy
 public class Proxy {
-	private int pageNum, pageSize, blockSize,pageCount,
-	startRow,endRow,startPage,endPage,
-	prevBlock, nextBlock,rowCount;
-	private boolean existPrev, existNext;
+	private int pageNum, pageSize, blockSize, startRow, endRow, startPage, endPage, prevBlock, nextBlock,rowCount,pageCount,blockNum;
+	private boolean existPrev,existNext;
 
-	//page_num  page_size block_size
 		public void carryOut(Map<?,?> paraMap) {
 
 		String _pageNum = (String)paraMap.get("page_num");
@@ -24,16 +21,18 @@ public class Proxy {
 		pageSize = (_pageSize == null) ? 5 : Integer.parseInt(_pageSize);
 		String _blockSize = (String)paraMap.get("block_size");
 		blockSize = (_blockSize == null) ? 5 : Integer.parseInt(_blockSize);
-		rowCount = 0;
-
+		rowCount = (int) paraMap.get("rowCount");
+		
+		
+		
 		int nmg = rowCount % pageSize;
 		int pageCount = (nmg == 0)?rowCount / pageSize:rowCount / pageSize+1;
-		startRow = (pageNum -1) *pageSize +1;
+		startRow = (pageNum -1) *pageSize;
 		System.out.println("스타트로우: "+startRow);
 		endRow = (rowCount > pageNum * pageSize)? pageNum * pageSize: rowCount;
 		
 
-		int blockNum = (pageNum-1)/blockSize;
+		blockNum = (pageNum-1)/blockSize;
 		if(existPrev) {
 			startPage = blockNum*blockSize+1;
 			
@@ -41,6 +40,8 @@ public class Proxy {
 			startPage = 1;
 		}
 		
+		startPage = pageNum -((pageNum-1)%blockSize);
+		endPage = startPage+(blockSize-1);
 
 		if(endPage>pageCount) {
 			endPage = pageCount;
@@ -49,6 +50,14 @@ public class Proxy {
 		existPrev = (startPage - pageSize) > 0;
 		existNext = (startPage + pageSize) <= pageCount;
 		prevBlock = startPage - pageSize; 
-		nextBlock = startPage + pageSize;
+		nextBlock = endPage + 1;
+		System.out.println("스타트페이지 "+startPage);
+		System.out.println("엔드페이지 "+endPage);
+		System.out.println("스타트로우 "+startRow);
+		System.out.println("엔드로우 "+endRow);
+		System.out.println("페이지사이즈 "+pageSize);
+		System.out.println("블록사이즈 "+blockSize);
+		System.out.println("페이지넘버 "+pageNum);
+		System.out.println("로우카운트 "+rowCount);
 		}
 		}
