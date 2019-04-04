@@ -166,6 +166,7 @@ cust =(()=>{
 		 * */
 			
 	};
+
 	let cust_nav=(x)=>{
 		$.getScript(compojs,()=>{
 			$('#left_content ul.nav').empty();
@@ -230,6 +231,15 @@ cust =(()=>{
 			
 			});
 		$('#myp').addClass('active');
+		});
+		$('#srch_btn').on('click',e=>{
+			e.preventDefault();
+			$.getScript(prodjs,()=>{
+				let a = {srch:$('#search_name').val(),
+						page:'1' }
+				prod.search(a);
+			});
+
 		});
 	};
 

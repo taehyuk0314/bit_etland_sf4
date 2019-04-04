@@ -12,9 +12,10 @@ import lombok.Data;
 public class Proxy {
 	private int pageNum, pageSize, blockSize, startRow, endRow, startPage, endPage, prevBlock, nextBlock,rowCount,pageCount,blockNum;
 	private boolean existPrev,existNext;
+	private String search;
 
 		public void carryOut(Map<?,?> paraMap) {
-
+		search = (String) paraMap.get("search");
 		String _pageNum = (String)paraMap.get("page_num");
 		pageNum = (_pageNum == null) ? 1 : Integer.parseInt(_pageNum);
 		String _pageSize = (String)paraMap.get("page_size");

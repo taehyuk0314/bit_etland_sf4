@@ -159,9 +159,9 @@ span.psw {
         <li><a href="#">Photos</a></li>
       </ul><br>
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search Blog..">
+        <input type="text"  class="form-control" placeholder="상품 검색" id="search_name">
         <span class="input-group-btn">
-          <button class="btn btn-default" type="button">
+          <button class="btn btn-default" type="button" id="srch_btn">
             <span class="glyphicon glyphicon-search"></span>
           </button>
         </span>
@@ -240,6 +240,7 @@ span.psw {
 <script src="<%=application.getContextPath()%>/resources/js/employee/emp.js"></script>
 <script src="<%=application.getContextPath()%>/resources/js/customer/cust.js"></script>
 <script src="<%=application.getContextPath()%>/resources/js/common/auth.js"></script>
+<script src="<%=application.getContextPath()%>/resources/js/common/util.js"></script>
 <script src="<%=application.getContextPath()%>/resources/js/product/prod.js"></script>
 <script>
 app.init('<%=application.getContextPath()%>');

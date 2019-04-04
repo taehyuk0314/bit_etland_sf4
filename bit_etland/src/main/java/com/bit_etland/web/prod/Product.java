@@ -1,5 +1,7 @@
 package com.bit_etland.web.prod;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +15,9 @@ public class Product {
 				   categoryID,
 				   unit,
 				   photo,
-				   price;
+				   price,
+				   color;
+	private List<String> freebies;
 
 	
 }

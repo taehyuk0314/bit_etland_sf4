@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bit_etland.web.supp.SupplierMapper">
+   <resultMap id="result" type="hashmap">
+  <id property="supplierID" column="SUPPLIER_ID" />
+  <result property="supplierName" column="SUPPLIER_NAME"/>
+  <result property="contactName" column="CONTACT_NAME"/>
+  <result property="address" column="ADDRESS"/>
+  <result property="city" column="CITY"/>
+  <result property="postalCode" column="POSTAL_CODE"/>
+  <result property="country" column="COUNTRY"/>
+  <result property="phone" column="PHOTO"/>
+</resultMap> 
+  <select id ="txSupplier" resultType="string" parameterType="string">
+	SELECT SUPPLIER_ID supplierID FROM SUPPLIERS
+	WHERE SUPPLIER_NAME LIKE #{supplierName}
+  </select> 
+	
+</mapper>

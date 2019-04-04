@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,20 +15,28 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bit_etland.web.catg.Category;
+import com.bit_etland.web.catg.CategoryMapper;
 import com.bit_etland.web.cmm.IConsumer;
 import com.bit_etland.web.cmm.IFunction;
 import com.bit_etland.web.cmm.ISupplier;
 import com.bit_etland.web.cmm.PrintService;
 import com.bit_etland.web.cmm.Proxy;
 import com.bit_etland.web.cmm.Users;
+import com.bit_etland.web.supp.Supplier;
+import com.bit_etland.web.supp.SupplierMapper;
 
 @RestController
 public class ProductController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 	@Autowired Product prod;
+	@Autowired Category catg;
+	@Autowired Supplier supp;
 	@Autowired PrintService ps;
 	@Autowired ProductMapper prodMap;
+	@Autowired CategoryMapper catgMap;
+	@Autowired SupplierMapper suppMap;
 	@Autowired Map<String, Object> map;
 	@Autowired Users<?> user;
 	@Autowired Proxy pxy;
@@ -42,7 +51,33 @@ public class ProductController {
 		return (Product)i.apply(param);			
 		};	
 		
-		
+
+		@GetMapping("/Products/{search}/{page}")
+		public Map<?,?> search(@PathVariable String search,
+				@PathVariable String page){
+		map.clear();
+		System.out.println(page);
+		System.out.println("검색리스트");
+		logger.info("----------검색 리스트------------");
+		System.out.println(search);
+		String srh = "%"+search+"%";
+		ISupplier sup = () -> prodMap.searchCountProducts(srh);
+		System.out.println("총 계수"+sup.get());
+		map.put("page_num", page);
+		map.put("page_size", "5");
+		map.put("block_size", "5");
+		map.put("rowCount", sup.get());
+		map.put("search", srh);
+		pxy.carryOut(map);
+		IFunction i = (Object o) -> prodMap.selectProductsList((Proxy) o);
+		System.out.println(pxy.getSearch());
+		List<?> ls = (List<?>) i.apply(pxy);	
+		ps.accept("리스트::"+ls);
+		map.clear();
+		map.put("ls", ls);
+		map.put("pxy", pxy);
+		return map;	
+		}
 		
 		@SuppressWarnings("unchecked")
 		@GetMapping("/Products/page/{page}")
@@ -68,12 +103,26 @@ public class ProductController {
 		}
 		
 				
-		
-	@GetMapping("/Products")
-	public Map<?, ?> join(
+	@Transactional	
+	@PostMapping("/phones")
+	public Map<?, ?> regist(
 			@RequestBody Product param) {
-		logger.info("----------prod진입------------");
-		IConsumer i = (Object o) -> prodMap.insertProduct(param);
+		logger.info("----------prod 상품등록진------------");
+		List<String> ls = prod.getFreebies();
+		ps.accept("리스트:: "+ls);
+		ps.accept("리스트:: "+param.toString());
+		
+		IFunction i1 = s -> catgMap.txCategory((String)s);
+		IFunction i2 = s -> suppMap.txSupplier((String)s);
+		System.out.println(param.getCategoryID());
+		System.out.println(param.getSupplierID());
+		String cateID = (String) i1.apply(param.getCategoryID()); //name
+		String suppID = (String) i2.apply(param.getSupplierID()); //name
+		System.out.println(cateID);
+		System.out.println(suppID);
+		param.setCategoryID(cateID);
+		param.setSupplierID(suppID);
+		IConsumer i = o -> prodMap.insertProduct((Product)o);
 		i.accept(param);
 		map.clear();
 		map.put("msg", "SUCCESS");

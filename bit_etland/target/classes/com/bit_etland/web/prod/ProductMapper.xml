@@ -13,6 +13,15 @@
   <result property="price" column="PRICE"/>
   <result property="photo" column="PHOTO"/>
 </resultMap>
+	<insert id="insertProduct"
+		   parameterType="com.bit_etland.web.prod.Product"
+		  flushCache="true"
+		  statementType="PREPARED"
+		  timeout="20">
+        INSERT INTO PRODUCTS (PRODUCT_ID,PRODUCT_NAME,SUPPLIER_ID,CATEGORY_ID,UNIT,PRICE) VALUES (
+            #{productID}, #{productName}, #{supplierID}, #{categoryID},#{unit},#{price}
+        )
+  </insert>
   <select id ="selectProducts" resultMap="result" parameterType="com.bit_etland.web.cmm.Proxy">
 SELECT @ROWNUM:=@ROWNUM+1 AS rnum,
             C.*
@@ -20,8 +29,24 @@ SELECT @ROWNUM:=@ROWNUM+1 AS rnum,
     ORDER BY rnum DESC
     limit #{startRow}, #{pageSize};
   </select>
+    <select id ="selectProductsList" resultType="com.bit_etland.web.prod.Product" parameterType="com.bit_etland.web.cmm.Proxy">
+SELECT R.*
+    FROM (SELECT DISTINCT @rownum:=@rownum+1 as no1,
+                    P.PRODUCT_ID productID,
+                    P.PRODUCT_NAME productName,
+                    S.SUPPLIER_NAME supplierID,
+                    C.CATEGORY_NAME categoryID,
+                    P.UNIT,
+                    P.PRICE
+    FROM PRODUCTS P JOIN SUPPLIERS S ON P.SUPPLIER_ID LIKE S.SUPPLIER_ID
+                     JOIN CATEGORIES C ON P.CATEGORY_ID LIKE C.CATEGORY_ID,(SELECT @rownum:=0) AS a
+    WHERE P.PRODUCT_NAME LIKE #{search} OR SUPPLIER_NAME LIKE #{search} OR ADDRESS LIKE #{search} OR CATEGORY_NAME LIKE #{search})R
+WHERE no1 BETWEEN #{startRow} AND #{endRow};
+  </select>
     <select id ="countProducts" resultType="int">
 SELECT COUNT(*) FROM PRODUCTS;
   </select>
-
+    <select id ="searchCountProducts" resultType="int">
+SELECT COUNT(*) FROM PRODUCTS WHERE PRODUCT_NAME LIKE #{value};
+  </select>	
 </mapper>

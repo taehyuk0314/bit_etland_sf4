@@ -15,7 +15,7 @@ var emp = emp || {};
 		};
 		let onCreate =()=>{
 			setContentView();
-
+			
 		};
 		let setContentView =()=>{};
 		let emp_nav =(x)=>{
@@ -31,7 +31,7 @@ var emp = emp || {};
 				{name : 'prod_st' , val : '상품 통계'}
 				];
 			$.getScript(compojs,()=>{
-				
+				$.getScript(prodjs,()=>{
 				$.each(arr,(i,j)=>{
 					$('<li><a href="#">'+j.val+'</a></li>')
 					.appendTo(l_cnt+' ul.nav')
@@ -46,35 +46,36 @@ var emp = emp || {};
 							cust.list(1);
 							break;
 						case 'prod_r':
-							$(r_cnt).empty();
-							$(compo.prod_register()).appendTo(r_cnt);
-							$('form button[type=submit]').click(e=>{
-								e.preventDefault();
-							});
+							prod.regist();
 							break;
 						case 'prod_l':
-							$.getScript(prodjs,()=>{
 									prod.list(1);
-							});
-							break;
-							
-						default:
 							break;
 						}
 					})
 				});
 				$('#cust_l').addClass('active');
 			});
+			});
+			$('#srch_btn').on('click',()=>{
+				alert('테스트');
+
+			});
 		};	
-	
+		let cust_srch =()=>{
+
+		}
 		return{init : init,
 			emp_nav : emp_nav};
 	})();
-/*
+/*srch_btn
  * 고객 목록
  * 상품 등록
  * 상품 목록
  * 상품 수정
  * 상품 삭제
  * 상품 통계
+ * 
+ * 값이없으면 검색어를 입력해주세요
+ * 끝나면 
  */
