@@ -1,7 +1,10 @@
 package com.bit_etland.web.prod;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +16,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.bit_etland.web.catg.Category;
 import com.bit_etland.web.catg.CategoryMapper;
@@ -40,6 +47,7 @@ public class ProductController {
 	@Autowired Map<String, Object> map;
 	@Autowired Users<?> user;
 	@Autowired Proxy pxy;
+	@Resource(name = "uploadPath")private String uploadPath;
 	
 	@PostMapping("/Products/{userid}")
 	public Product login(
@@ -65,6 +73,31 @@ public class ProductController {
 		System.out.println("총 계수"+sup.get());
 		map.put("page_num", page);
 		map.put("page_size", "5");
+		map.put("block_size", "5");
+		map.put("rowCount", sup.get());
+		map.put("search", srh);
+		pxy.carryOut(map);
+		IFunction i = (Object o) -> prodMap.selectProductsList((Proxy) o);
+		System.out.println(pxy.getSearch());
+		List<?> ls = (List<?>) i.apply(pxy);	
+		ps.accept("리스트::"+ls);
+		map.clear();
+		map.put("ls", ls);
+		map.put("pxy", pxy);
+		return map;	
+		}
+		@GetMapping("/Products/{search}/grid/{page}")
+		public Map<?,?> grid(@PathVariable String search,
+				@PathVariable String page){
+		map.clear();
+		System.out.println(page);
+		logger.info("----------그리드 리스트------------");
+		System.out.println(search);
+		String srh = "%"+search+"%";
+		ISupplier sup = () -> prodMap.searchCountProducts(srh);
+		System.out.println("총 계수"+sup.get());
+		map.put("page_num", page);
+		map.put("page_size", "9");
 		map.put("block_size", "5");
 		map.put("rowCount", sup.get());
 		map.put("search", srh);
@@ -128,6 +161,16 @@ public class ProductController {
 		map.put("msg", "SUCCESS");
 		return map;			
 		};
+	@RequestMapping(value="/phone/file" , method=RequestMethod.POST)
+	public Map<?, ?> fileUpload(MultipartHttpServletRequest req)throws Exception{
+		Iterator<String> it = req.getFileNames();
+		if(it.hasNext()) {
+			MultipartFile mf = req.getFile(it.next());
+			ps.accept("넘어온 파일명"+mf.getName());
+		}
+		ps.accept("넘어온 파일명"+uploadPath);
+		return map;
+	}
 		
 	@PutMapping("/Products/{userid}")
 	public Map<String, Object> update(

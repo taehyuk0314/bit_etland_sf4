@@ -6,6 +6,7 @@
 <mapper namespace="com.bit_etland.web.prod.ProductMapper">
   <resultMap id="result" type="hashmap">
   <id property="productID" column="PRODUCT_ID" />
+  <result property="rnum" column="RNUM"/>
   <result property="productName" column="PRODUCT_NAME"/>
   <result property="supplierID" column="SUPPLIER_ID"/>
   <result property="categoryID" column="CATEGORY_ID"/>
@@ -31,7 +32,7 @@ SELECT @ROWNUM:=@ROWNUM+1 AS rnum,
   </select>
     <select id ="selectProductsList" resultType="com.bit_etland.web.prod.Product" parameterType="com.bit_etland.web.cmm.Proxy">
 SELECT R.*
-    FROM (SELECT DISTINCT @rownum:=@rownum+1 as no1,
+    FROM (SELECT DISTINCT @rownum:=@rownum+1 as rnum,
                     P.PRODUCT_ID productID,
                     P.PRODUCT_NAME productName,
                     S.SUPPLIER_NAME supplierID,
@@ -41,12 +42,15 @@ SELECT R.*
     FROM PRODUCTS P JOIN SUPPLIERS S ON P.SUPPLIER_ID LIKE S.SUPPLIER_ID
                      JOIN CATEGORIES C ON P.CATEGORY_ID LIKE C.CATEGORY_ID,(SELECT @rownum:=0) AS a
     WHERE P.PRODUCT_NAME LIKE #{search} OR SUPPLIER_NAME LIKE #{search} OR ADDRESS LIKE #{search} OR CATEGORY_NAME LIKE #{search})R
-WHERE no1 BETWEEN #{startRow} AND #{endRow};
+	WHERE rnum BETWEEN #{startRow} AND #{endRow};
   </select>
     <select id ="countProducts" resultType="int">
 SELECT COUNT(*) FROM PRODUCTS;
   </select>
-    <select id ="searchCountProducts" resultType="int">
-SELECT COUNT(*) FROM PRODUCTS WHERE PRODUCT_NAME LIKE #{value};
-  </select>	
+    <select id ="searchCountProducts" resultType="Integer" parameterType="string">
+	  SELECT DISTINCT COUNT(*)
+	  FROM PRODUCTS P JOIN SUPPLIERS S ON P.SUPPLIER_ID LIKE S.SUPPLIER_ID
+					 JOIN CATEGORIES C ON P.CATEGORY_ID LIKE C.CATEGORY_ID
+	  WHERE P.PRODUCT_NAME LIKE #{search} OR SUPPLIER_NAME LIKE #{search} OR ADDRESS LIKE #{search} OR CATEGORY_NAME LIKE #{search}  
+	</select>
 </mapper>

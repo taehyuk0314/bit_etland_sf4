@@ -82,6 +82,33 @@ prod =(()=>{
 				}
 			});
 		});
+		$("#img_upload_btn").click(function(){
+			let ok =(this.fin[0].name.match(/jpg|gif|png|jpeg/i)) ? true : false;
+			if(ok){
+/*				let fd = new FormData();
+				fd.append('file',this.files[0]);*/
+				$('#img_upload_frm').attr('action',_+'/phones/file');
+				$.ajax({
+					url : $('#img_upload_frm').attr('action'),
+					type : 'post',
+					data : fd,
+					dataType : "text",
+					enctype : "multipart/form-data",
+					beforeSubmit : function(){
+						alert('로딩');
+					},
+					success : b=>{
+						alert("파일업로드 성공");
+					},
+					error : e =>{
+						alert("파일업로드 실패");
+						
+					}
+				}).submit();
+			}else{
+				alert('gif, png, jpg, jpeg 파일만 업로드 할 수 잇습니다');
+			}
+		});
 	};
 	let list =(x)=>{
 		path();
@@ -145,7 +172,7 @@ prod =(()=>{
 	let search =(x)=>{
 
 		path();
-		alert("????태혁이 바보 "+x.srch);
+		alert("?? "+x.srch);
 		$(r_cnt).empty();
 		$.getScript(compojs,()=>{
 			$(compo.prod_search()).appendTo(r_cnt);
@@ -187,7 +214,7 @@ prod =(()=>{
 						$('<a class=page>'+i+'</a>')
 						.appendTo('.pagination')
 						.click(function(){
-							alert('??태혁 페이지: '+i);
+							alert('??페이지: '+i);
 							let arr1 = {srch:x.srch,
 									page:$(this).text()}
 							search(arr1);
@@ -201,7 +228,40 @@ prod =(()=>{
 					});
 					
 				};
+				$('#grid_btn').click(e=>{
+					let url = _+'/Products/'+x.srch+'/grid/'+x.page;
+					e.preventDefault();
+					$.getJSON(url,d=>{
+						
+						$(r_cnt).empty();
+						$('  <h2>그리드 리스트</h2>'
+							    +'<button id="grid_btn">원상 복귀 보기</button>'
+								+'  <div class="row" id="gallery_title">').appendTo(r_cnt);	
+						let i =0;
+						let table = '';
+						$('<div id="grid" />').appendTo(r_cnt);
+						for(i=0;i<3;i++){
+							$('<div class="row progrid"></div>').append('#grid');
+						$.each([1,2,3],(i)=>{
+							table += '<div class="col-md-4">'
+								+'      <div class="thumbnail">'
+								+'        <a href="/w3images/lights.jpg" target="_blank">'
+								+'          <img src="http://news.samsungdisplay.com/wp-content/uploads/2019/02/Galaxy_Fold_Keyvisual_contrast.jpg" alt="Lights" style="width:100%">'
+								+'          <div class="caption">'
+								+'            <p>Lorem ipsum donec id elit non mi porta gravida at eget metus.</p>'
+								+'          </div>'
+								+'        </a>'
+								+'      </div>'
+								+'    </div>';
+						});
+						}
+						table +='</div></div>';
+						$(table).appendTo('#gallery_title');
+						
+						
+					});
 
+				});
 
 			});
 		});

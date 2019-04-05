@@ -227,8 +227,8 @@ cust =(()=>{
 						break;
 					};
 				});
-
-			
+				$('#search_name').show();
+				$('#srch_btn').show();
 			});
 		$('#myp').addClass('active');
 		});

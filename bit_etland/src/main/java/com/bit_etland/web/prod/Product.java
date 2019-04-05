@@ -9,7 +9,8 @@ import lombok.Data;
 
 @Data @Component @Lazy
 public class Product {
-	private String productID,
+	private String rnum,
+				   productID,
 				   productName,
 				   supplierID,
 				   categoryID,
